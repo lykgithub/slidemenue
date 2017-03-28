@@ -1,6 +1,6 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div class="slide-menue">
-    <div class="menue" ref="slideMenu" :class="{menuetransition:isAnimate}">
+    <div class="menue" ref="slideMenu" :class="{menuetransition:isAnimate}" :style="{width:width+'px',transform: 'translate3d('+width*-1+'px'+',0,0)'}">
       <slot></slot>
     </div>
     <div class="mask" ref="mask" @click="closeMask($event)"></div>
@@ -13,7 +13,7 @@
   export default {
     name: 'slidemenue',
     data () {
-      return {}
+
     },
     props: {
       isAnimate: Boolean, //动画过度启用时机，修改css中的.menue-transition
@@ -50,13 +50,12 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .menue {
-    width: 300px;
     height: 100%;
     background-color: #eee;
     position: absolute;
     top: 0;
     z-index: 10;
-    transform: translate3d(-300px, 0, 0);
+    /*transform: translate3d(-300px,0,0)*/
   }
 
   .mask {

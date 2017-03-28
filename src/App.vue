@@ -32,7 +32,7 @@
         startX: 0,     //按下时的横向位置
         distanceX: 0,  //最终的移动距离
         isMsk: true,  //控制遮罩层的开关
-        width: 300
+        width: 300    //侧滑菜单宽度
       }
     },
     watch: {
