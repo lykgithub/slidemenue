@@ -1,6 +1,6 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div class="slide-menue">
-    <div class="menue" ref="slideMenu" :class="{menuetransition:isAnimate}" @click="clickMenue($event)">
+    <div class="menue" ref="slideMenu" :class="{menuetransition:isAnimate}">
       <slot></slot>
     </div>
     <div class="mask" ref="mask" @click="closeMask($event)"></div>
@@ -11,7 +11,7 @@
 <script>
   //poX:侧滑菜单的位置
   export default {
-    name: 'hello',
+    name: 'slidemenue',
     data () {
       return {}
     },
@@ -43,9 +43,6 @@
           this.$emit("close")
         }
       },
-      clickMenue(e){
-        this.$emit("clickMenue",e)
-      }
     }
   }
 </script>
@@ -53,13 +50,13 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .menue {
-    width: 350px;
+    width: 300px;
     height: 100%;
-    background-color: #ccc;
+    background-color: #eee;
     position: absolute;
     top: 0;
     z-index: 10;
-    transform: translate3d(-350px, 0, 0);
+    transform: translate3d(-300px, 0, 0);
   }
 
   .mask {

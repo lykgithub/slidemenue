@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <slide-menue :isAnimate="isAnimate" :width="width" :posX=distanceX :showMsk='isMsk' @close="closeMenue" @clickMenue="clickMenue($event)">
+    <slide-menue :isAnimate="isAnimate" :width="width" :posX=distanceX :showMsk='isMsk' @close="closeMenue">
       <div class="content">
-        <ul>
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-        </ul>
+        <div class="user-header">
+          <img src="./components/images/image.jpg"/>
+        </div>
+        <div class="menue-content">
+          <ul>
+            <li>列表1</li>
+            <li>列表2</li>
+            <li>列表3</li>
+          </ul>
+        </div>
       </div>
     </slide-menue>
   </div>
@@ -26,8 +31,8 @@
         currmoveX: 0,  //本次移动新增的距离
         startX: 0,     //按下时的横向位置
         distanceX: 0,  //最终的移动距离
-        isMsk: true ,  //控制遮罩层的开关
-        width:350
+        isMsk: true,  //控制遮罩层的开关
+        width: 300
       }
     },
     watch: {
@@ -41,22 +46,22 @@
     },
     mounted(){
       var _this = this
-      window.document.addEventListener('touchstart', function (e) {
+      document.addEventListener('touchstart', function (e) {
         _this.isAnimate = false
         _this.startX = e.changedTouches[0].pageX
       });
-      window.document.addEventListener('touchmove', function (e) {
+      document.addEventListener('touchmove', function (e) {
         e.preventDefault();
         _this.currmoveX = e.changedTouches[0].pageX - _this.startX;
       })
-      window.document.addEventListener('touchend', function (e) {
+      document.addEventListener('touchend', function (e) {
         _this.beforemoveX = _this.distanceX;  //抬起手指记录本次移动的距离作为下次的beforemoveX
         _this.isAnimate = true
-        if (_this.currmoveX > 100 || _this.currmoveX > -100 && _this.currmoveX < 0) {
+        if (_this.currmoveX > 30 || _this.currmoveX > -30 && _this.currmoveX < 0) {
           _this.distanceX = _this.beforemoveX = _this.width;
           _this.distanceX = _this.beforemoveX = _this.width;
           _this.isMsk = false
-        } else if (_this.currmoveX < -100 || _this.currmoveX < 100 && _this.currmoveX > 0) {
+        } else if (_this.currmoveX < -30 || _this.currmoveX < 30 && _this.currmoveX > 0) {
           _this.distanceX = _this.beforemoveX = 0
           _this.isMsk = true
         }
@@ -67,20 +72,18 @@
         this.distanceX = this.beforemoveX = 0
         this.isMsk = true
       },
-      clickMenue(e){
-        alert(e.target.innerHTML)
-      }
     }
   }
 </script>
 
-<style>
- .content ul li {
-   width: 100%;
-   height: 30px;
-   background-color: white;
-   margin-bottom: 2px;
-   text-align: center;
-   margin-bottom: 5px;
- }
+<style scoped>
+  .content .menue-content ul li {
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    text-align: center;
+    margin-bottom: 5px;
+    line-height: 60px;
+    font-size: 16px;
+  }
 </style>
