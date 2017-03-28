@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <slide-menue  :width="width">
+    <slide-menue  :width="300">
       <div class="content">
         <div class="user-header">
           <img src="./components/images/image.jpg"/>
@@ -26,7 +26,6 @@
     },
     data (){
       return {
-        width: 300    //侧滑菜单宽度
       }
     },
 
