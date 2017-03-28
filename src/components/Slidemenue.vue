@@ -3,7 +3,8 @@
     <div class="menue" ref="slideMenu" :class="{menuetransition:isAnimate}" :style="{width:width+'px',transform: 'translate3d('+width*-1+'px'+',0,0)'}">
       <slot></slot>
     </div>
-    <div class="mask" ref="mask" @click="closeMask($event)"></div>
+    <div class="mask" ref="mask" @click="closeMask($event)">
+    </div>
   </div>
 
 </template>
@@ -11,36 +12,69 @@
 <script>
   //poX:侧滑菜单的位置
   export default {
-    name: 'slidemenue',
-    data () {
-
+    data (){
+      return {
+        isAnimate: false, //控制过度的作用时机，不可设置
+        beforemoveX: 0, //上一次移动的距离
+        currmoveX: 0,  //本次移动新增的距离
+        startX: 0,     //按下时的横向位置
+        distanceX: 0,  //最终的移动距离
+        isMsk: false,  //控制遮罩层的开关
+      }
     },
-    props: {
-      isAnimate: Boolean, //动画过度启用时机，修改css中的.menue-transition
-      posX: Number, //侧滑菜单滑动时的实时位置
-      issmooths: Boolean, //菜单打开关闭平滑过度
-      showMsk: Boolean,//遮罩层开关
-      width:Number //侧滑菜单宽度
+    props:{
+      width:Number
     },
     watch: {
-      posX(val){
+      currmoveX(val){
+        //最终的移动距离等于上次移动的距离加上本次移动新增的距离
+        this.distanceX = val + this.beforemoveX
+        if (this.distanceX > this.width) {
+          this.distanceX = this.width;
+        }
+      },
+      distanceX(val){
         var m = -this.width + val
         this.$refs.slideMenu.style.transform = 'translate3d(' + m + 'px,0,0)'
       },
-      showMsk(val){
+      isMsk(val){
         if (val){
-          this.$refs.mask.style.opacity=0
-          this.$refs.mask.style.zIndex=-10
-        }else {
           this.$refs.mask.style.opacity=1
+        }else {
+          this.$refs.mask.style.opacity=0
+          this.$refs.mask.style.zIndex=-20
         }
       }
     },
+    mounted(){
+      var _this = this
+      document.addEventListener('touchstart', function (e) {
+        _this.isAnimate = false
+        _this.startX = e.changedTouches[0].pageX
+      });
+      document.addEventListener('touchmove', function (e) {
+          _this.currmoveX= e.changedTouches[0].pageX - _this.startX
+      })
+      document.addEventListener('touchend', function (e) {
+             //抬起手指记录本次移动的距离作为下次的beforemoveX
+        _this.beforemoveX = _this.distanceX
+        _this.isAnimate = true
+        if (_this.currmoveX > 30 ||-30< _this.currmoveX < 0) {
+          _this.distanceX = _this.beforemoveX = _this.width;
+          _this.isMsk = true
+        }else if (
+          _this.currmoveX < -30 ||0< _this.currmoveX < 30) {
+          _this.distanceX = _this.beforemoveX = 0
+          _this.isMsk = false
+        }
+      })
+    },
+
     methods: {
       closeMask(e){
         if (e.target.className == "mask") {
           this.$refs.mask.style.opacity=0
-          this.$emit("close")
+          this.distanceX = this.beforemoveX = 0
         }
       },
     }
@@ -55,7 +89,6 @@
     position: absolute;
     top: 0;
     z-index: 10;
-    /*transform: translate3d(-300px,0,0)*/
   }
 
   .mask {
