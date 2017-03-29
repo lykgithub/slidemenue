@@ -73,7 +73,7 @@
     methods: {
       closeMask(e){
         if (e.target.className == "mask") {
-          this.$refs.mask.style.opacity=0
+          this.isMsk=false
           this.distanceX = this.beforemoveX = 0
         }
       },

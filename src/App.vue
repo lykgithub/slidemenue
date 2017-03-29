@@ -5,7 +5,7 @@
         <div class="user-header">
           <img src="./components/images/image.jpg"/>
         </div>
-        <div class="menue-content">
+        <div class="menue-content" @click="clicks($event)">
           <ul>
             <li>列表1</li>
             <li>列表2</li>
@@ -14,6 +14,7 @@
         </div>
       </div>
     </slide-menue>
+    <div></div>
   </div>
 </template>
 
@@ -28,7 +29,11 @@
       return {
       }
     },
-
+methods:{
+  clicks(e){
+    alert(e.target.innerHTML)
+  }
+}
   }
 </script>
 
